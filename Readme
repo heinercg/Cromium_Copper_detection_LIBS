@@ -1,1 +1,96 @@
+# LIBS + Machine Learning for Heavy Metal Detection in Mulberry Leaves
 
+This repository contains the Python notebooks developed for the research article:
+
+**Castro Gutiérrez, H., Robles-Algarín, C., & Polo, A. (2025)**  
+📄 *Data Augmentation and Machine Learning for Heavy Metal Detection in Mulberry Leaves Using Laser-Induced Breakdown Spectroscopy (LIBS) Spectral Data*.  
+📘 *Processes*, 13(6), 1688. https://doi.org/10.3390/pr13061688
+
+---
+
+## 🧪 Overview
+
+This project applies **machine learning and data augmentation** to **classify and quantify heavy metals** (copper and chromium) in **mulberry leaves** using **LIBS (Laser-Induced Breakdown Spectroscopy)** data. The work addresses the challenges of small sample sizes and high dimensionality in LIBS datasets.
+
+Key contributions:
+
+- A novel **normal distribution-based data augmentation** method
+- **Random Forest-based feature selection**
+- Classification and regression models for **Cr** and **Cu**
+- Partial match of selected features with **NIST atomic emission lines**, improving interpretability
+
+---
+
+## 📁 Repository Structure
+
+| Notebook | Description |
+|----------|-------------|
+| `Cr_NIST_checking.ipynb` | Matches selected chromium wavelengths with NIST references (±1%) |
+| `Cu_NIST_checking.ipynb` | Matches selected copper wavelengths with NIST references (±1%) |
+| `Project_v2_Cr.ipynb` | Full pipeline for **chromium** detection: preprocessing, augmentation, feature selection, modeling |
+| `Project_v2_Cu.ipynb` | Full pipeline for **copper** detection: preprocessing, augmentation, feature selection, modeling |
+
+---
+
+## 🧬 Methodology Summary
+
+1. **Data Source**  
+   - LIBS spectra from mulberry leaves artificially contaminated with Cu and Cr  
+   - 100 samples per metal, each with 22,015 spectral features  
+   - 5 contamination levels (20 samples each)
+
+2. **Data Augmentation**  
+   - Synthetic samples (500 per metal) generated via Gaussian sampling  
+   - Sampling per contamination level using per-feature means and standard deviations  
+   - Justified using the Central Limit Theorem (80 averaged shots/sample)
+
+3. **Feature Selection**  
+   - Using Gini importance from Random Forest  
+   - Retained features contributing to 95% cumulative importance  
+   - Typically ~300–500 wavelengths retained
+
+4. **Models**  
+   - **Classification**: Random Forest (RF), SVM, Linear Regression Classifier  
+   - **Regression**: RF and SVM  
+   - RF achieved the best performance in both tasks
+
+5. **NIST Line Validation**  
+   - Model-selected wavelengths cross-checked with known atomic lines from NIST  
+   - Cu: 50/91 matched; Cr: 213/240 matched
+
+---
+
+## 📈 Results Summary
+
+### Classification (Test Accuracy)
+
+| Metal | RF | SVM | LRC |
+|-------|----|-----|-----|
+| Cu    | 0.99 | 0.93 | 0.94 |
+| Cr    | 0.96 | 0.89 | 0.85 |
+
+### Regression (R² on Test Set)
+
+| Metal | RF | SVM |
+|-------|----|-----|
+| Cu    | 0.9994 | −0.116 |
+| Cr    | 0.954  |  0.229 |
+
+---
+
+## 📚 Citation
+
+If you use this code, please cite the original paper:
+
+```bibtex
+@article{castro2025libs,
+  title={Data Augmentation and Machine Learning for Heavy Metal Detection in Mulberry Leaves Using Laser-Induced Breakdown Spectroscopy (LIBS) Spectral Data},
+  author={Castro Gutiérrez, Heiner and Robles-Algarín, Carlos and Polo, Aura},
+  journal={Processes},
+  volume={13},
+  number={6},
+  pages={1688},
+  year={2025},
+  publisher={MDPI},
+  doi={10.3390/pr13061688}
+}
